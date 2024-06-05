@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body ng-controller="cartController">
+
+<div class="container mt-5">
+    <h2>Shopping Cart</h2>
+    <form ng-submit="addItem()">
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" class="form-control" id="productName" ng-model="newItem.name" required>
+        </div>
+        <div class="form-group">
+            <label for="productPrice">Price</label>
+            <input type="number" class="form-control" id="productPrice" ng-model="newItem.price" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in cartItems">
+                <td>{{ item.name }}</td>
+                <td>{{ item.price | currency: '$' }}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" ng-click="removeItem($index)">Remove</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('cartController', function($scope) {
+        $scope.cartItems = [];
+
+        $scope.addItem = function() {
+            $scope.cartItems.push({
+                name: $scope.newItem.name,
+                price: $scope.newItem.price
+            });
+            $scope.newItem = {}; // Clear the form after submission
+        };
+
+        $scope.removeItem = function(index) {
+            $scope.cartItems.splice(index, 1);
+        };
+    });
+</script>
+
+</body>
+</html>
